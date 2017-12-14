@@ -15,7 +15,9 @@
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+* Stream을 필요에 따라 read할 수 있는 단위를 결정할 수 있게 여러 method를 제공하고 있다.
+HTTP request의 경우에는 line별로 읽고, HTTP response body의 경우에는 byte 전체를 읽는다.
+Stream을 상황에 따라 적절하게 read하는 게 중요한 것 같다.
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
