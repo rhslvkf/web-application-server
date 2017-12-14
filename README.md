@@ -28,16 +28,17 @@ Stream을 상황에 따라 적절하게 read하는 게 중요한 것 같다.
 ### 요구사항 4 - redirect 방식으로 이동
 * 웹브라우저는 이전 요청 정보를 유지하고 있기 때문에 새로고침을 하게 되면 이전 요청 정보를 재요청하게 된다.
 
-`HTTP status code : 200`
-
+<pre>
+status code : 200
 서버로 요청한 정보 유지
-
-`HTTP status code : 302`
-
+</pre>
+<pre>
+HTTP status code : 302
 response에 Location값을 넣어 보내면 웹브라우저에서 서버로 해당 Location으로 재요청하게 된다.
 따라서, Location값이 이전 요청 정보가 된다.
+</pre>
 
-회원 가입같은 로직의 경우 302 HTTP status code를 사용해서 반드시 리다이렉트를 해주어야 한다.
+* 회원 가입같은 로직의 경우 302 HTTP status code를 사용해서 반드시 리다이렉트를 해주어야 한다.
 라이브러리나 프레임워크에서 리다이렉트를 사용할 경우 내부적으로 302 상태 코드를 이용하는 것으로 생각하면 된다.
 
 ### 요구사항 5 - cookie
