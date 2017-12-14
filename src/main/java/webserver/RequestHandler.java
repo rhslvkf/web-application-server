@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import model.User;
 import util.HttpRequestUtils;
+import util.IOUtils;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -36,8 +37,12 @@ public class RequestHandler extends Thread {
         	String line = br.readLine();
         	if (line == null) return;
         	String[] tokens = line.split(" ");
+        	int contentLength = 0;
         	while (!line.equals("")) {
         		log.debug(line);
+        		if (line.contains("Content-Length")) {
+        			contentLength = getContentLength(line);
+        		}
         		line = br.readLine();
         	}
         	String url = tokens[1];
@@ -45,9 +50,8 @@ public class RequestHandler extends Thread {
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = {};
             if (url.startsWith("/user/create")) {
-            	int index = url.indexOf("?");
-            	String queryString = url.substring(index + 1);
-            	Map<String, String> params = HttpRequestUtils.parseQueryString(queryString);
+            	String requestBody = IOUtils.readData(br, contentLength);
+            	Map<String, String> params = HttpRequestUtils.parseQueryString(requestBody);
             	User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
             	log.debug("User : {} ", user);
             	body = Files.readAllBytes(new File("./webapp/index.html").toPath());
@@ -80,4 +84,9 @@ public class RequestHandler extends Thread {
             log.error(e.getMessage());
         }
     }
+    
+    private int getContentLength(String line) {
+    	return Integer.parseInt(HttpRequestUtils.parseHeader(line).getValue());
+	}
+    
 }
